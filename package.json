@@ -1,0 +1,28 @@
+{
+  "name": "imdb-scraper",
+  "version": "1.0.0",
+  "description": "Basic IMDB Scraper",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arvinkent18/imdb-scraper.git"
+  },
+  "keywords": [
+    "IMDB",
+    "Scraper"
+  ],
+  "author": "Arvin Kent S. Lazaga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arvinkent18/imdb-scraper/issues"
+  },
+  "homepage": "https://github.com/arvinkent18/imdb-scraper#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  }
+}
