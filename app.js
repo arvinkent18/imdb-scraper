@@ -1,40 +1,52 @@
 const request = require('request-promise');
 const cheerio = require('cheerio');
+const fs = require('fs');
 
-const baseURI = 'https://www.imdb.com/title/tt8946378/?ref_=hm_fanfav_tt_1_pd_fp1';
-
-const movieData = new Set();
+const urls = [
+  'https://www.imdb.com/title/tt8946378/?ref_=hm_fanfav_tt_1_pd_fp1',
+  'https://www.imdb.com/title/tt5753856/?ref_=hm_fanfav_tt_2_pd_fp1',
+];
 
 (async () => {
-  const html = await request({
-    url: baseURI,
-    gzip: true,
-  });
+  const moviesData = [];
 
-  let $ = cheerio.load(html);
+  for (let movie of urls) {
+    const html = await request({
+      url: movie,
+      gzip: true,
+    });
+  
+    let $ = cheerio.load(html);
+  
+    let title = $('div.title_wrapper > h1').text();
+  
+    let rating = $('span[itemprop="ratingValue"]').text();
+  
+    let duration = $('div.title_wrapper > div > time').text();
+  
+    let releasedDate = $('.txt-block:nth-child(6)').text();
+  
+    let genres = [];
+    
+    $('a[href^="/search/title?genres"]').each((_index, element) => {
+      let genre = $(element).text();
+  
+      genres.push(genre);
+    });
 
-  let title = $('div.title_wrapper > h1').text();
+    duration = duration.trim();
+    releaseDate = releasedDate.trim();
+    let uniqueGenres = [...new Set(genres)];
 
-  let rating = $('span[itemprop="ratingValue"]').text();
+    moviesData.push({
+      title,
+      rating,
+      duration,
+      releasedDate,
+      uniqueGenres,
+    });
+  }
 
-  let duration = $('div.title_wrapper > div > time').text();
-
-  let releasedDate = $('div.title_wrapper > div > a:nth-child(8)').text();
-
-  let genres = [];
-
-  $('#titleStoryLine > div:nth-child(10) > a[href^="/search"]').each((_index, element) => {
-    let genre = $(element).text();
-
-    genres.push(genre);
-  });
-
-  movieData.add(title);
-  movieData.add(rating);
-  movieData.add(duration);
-  movieData.add(releasedDate);
-  movieData.add(genres);
-
-  console.log(movieData);
+  console.log(moviesData);
 })();
 
