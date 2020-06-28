@@ -69,6 +69,12 @@ const movies = [
         console.log('finished scraping image...', stream.path);
         resolve();
       })
+      .on('error', (error) => {
+        reject(error);
+      });
+    })
+    .catch(err => {
+      console.log(`Error downloading ${movie.id}`, err);
     });
 
     fs.writeFileSync('./data.json', JSON.stringify(moviesData), 'utf-8');
