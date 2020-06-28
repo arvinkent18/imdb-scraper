@@ -45,6 +45,8 @@ const urls = [
       releasedDate,
       uniqueGenres,
     });
+
+    fs.writeFileSync('./data.json', JSON.stringify(moviesData), 'utf-8');
   }
 
   console.log(moviesData);
